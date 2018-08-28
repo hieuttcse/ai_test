@@ -36,8 +36,12 @@ input_img = Input(shape=(784,)) #mnist with input size 28 x 28
 
 # simple fully mapped net for encoded code
 encoded = Dense(encoding_dim,activation='relu')(input_img)
+# encoded = Dense(encoding_dim)(input_img)
+
 # another simple net for decoding
 decoded = Dense(784,activation='sigmoid')(encoded)
+# decoded = Dense(784)(encoded)
+
 
 # define model for end-to-end traning
 autoencoder = Model(input_img, decoded)
@@ -50,7 +54,8 @@ decoder = Model(encoded_code, decoder_layer(encoded_code))
 
 autoencoder.compile(optimizer='adadelta',
                     loss='binary_crossentropy')
-
+# autoencoder.compile(optimizer='sgd',
+#                     loss='mean_squared_error')
 
 # setup backend, callbacks
 config = tf.ConfigProto( device_count={'GPU':1, 'CPU':4})
